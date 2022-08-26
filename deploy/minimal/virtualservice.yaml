@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: httpbin-vs
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - ingressgateway
+  http:
+  - match:
+    - uri:
+        prefix: /any
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: server.default.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /0
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: server-0.server.default.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /1
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: server-1.server.default.svc.cluster.local
+

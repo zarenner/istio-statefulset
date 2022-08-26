@@ -1,0 +1,22 @@
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  profile: minimal
+  components:
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      namespace: istio-system
+      k8s:
+        service:
+          type: LoadBalancer
+          ports:
+          - name: http2
+            port: 80
+            targetPort: 80
+            nodePort: 80
+            protocol: TCP
+  values:
+    gateways:
+      istio-ingressgateway:
+        runAsRoot: true

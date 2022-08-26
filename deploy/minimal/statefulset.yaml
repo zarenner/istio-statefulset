@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: server
+spec:
+  replicas: 2
+  serviceName: server
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - image: jmalloc/echo-server
+        imagePullPolicy: IfNotPresent
+        name: server
+        ports:
+        - containerPort: 80
+        env:
+          - name: PORT
+            value: "80"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
